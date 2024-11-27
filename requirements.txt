@@ -21,4 +21,5 @@ Pillow
 psycopg2-binary
 pathvalidate
 music_tag
+pip install python-telegram-bot
 git+https://github.com/kokarare1212/librespot-python#egg=librespot
