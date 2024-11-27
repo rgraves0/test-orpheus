@@ -1,20 +1,28 @@
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
 import os
-from dotenv import load_dotenv
+import telegram
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-load_dotenv()  # Load environment variables from .env
+# Replace 'YOUR_TOKEN' with your actual bot token
+TOKEN = 'YOUR_TOKEN'
 
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+def start(update, context):
+    update.message.reply_text('Hello! I am your music archiving bot. Use /archive <link> to archive a music link.')
 
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Hello! I am your OrpheusDL bot.')
+def archive(update, context):
+    if context.args:
+        link = context.args[0]
+        # Here you would call the OrpheusDL archiving function
+        # For example: os.system(f'python3 orpheus.py {link}')
+        update.message.reply_text(f'Archiving {link}...')
+    else:
+        update.message.reply_text('Please provide a link to archive.')
 
 def main():
-    updater = Updater(TOKEN)
-    dispatcher = updater.dispatcher
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
 
-    dispatcher.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("archive", archive))
 
     updater.start_polling()
     updater.idle()
